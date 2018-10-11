@@ -45,6 +45,16 @@ public extension UIColor {
         }
     }
     
+    public var hex6:String {
+        let (r,g,b,_) = RGBA
+        return String(format: "%2x%2x%2x", r, g, b)
+    }
+    
+    public var hex8:String {
+        let (r,g,b,a) = RGBA
+        return String(format: "%2x%2x%2x%2x", r, g, b, a)
+    }
+    
     public var HSBA:(Int, Int, Int, Int) {
         var h:CGFloat = 0, s:CGFloat = 0, b:CGFloat = 0, a:CGFloat = 0
         if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
