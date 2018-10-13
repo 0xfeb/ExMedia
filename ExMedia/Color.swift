@@ -47,12 +47,12 @@ public extension UIColor {
     
     public var hex6:String {
         let (r,g,b,_) = RGBA
-        return String(format: "%2x%2x%2x", r, g, b)
+        return String(format: "%02x%02x%02x", r, g, b)
     }
     
     public var hex8:String {
         let (r,g,b,a) = RGBA
-        return String(format: "%2x%2x%2x%2x", r, g, b, a)
+        return String(format: "%02x%02x%02x%02x", r, g, b, a)
     }
     
     public var HSBA:(Int, Int, Int, Int) {
