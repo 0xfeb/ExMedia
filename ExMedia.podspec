@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ExMedia"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.summary      = "Operations on media at iOS platform."
 
   # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   An fast library process at media. About color, image, filter, voice and others.
                    DESC
 
-  s.homepage     = "https://coding.net/u/danielwyo/p/ExMedia/git"
+  s.homepage     = "https://gitee.com/clstd/ExMedia"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://coding.net/u/danielwyo/p/ExMedia/git", :tag => "#{s.version}" }
+  s.source       = { :git => "git@gitee.com:clstd/ExMedia.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -135,7 +135,6 @@ Pod::Spec.new do |s|
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
   s.dependency "ExDraw"
-  s.dependency "ExRect"
   s.dependency "ExType"
 
 end
