@@ -698,6 +698,214 @@ Start scan
 > `public func start()`
 
 
+### BasicAnimation
+
+* Extension -- CABasicAnimation
+
+Basic animation mode 
+
+```
+public enum Mode {
+        //layer
+        //下列layer必须使用"transform"作为key
+        case rotateX(from:CGFloat, to:CGFloat) //上下翻转
+        case rotateY(from:CGFloat, to:CGFloat) //左右翻转
+        case rotateZ(from:CGFloat, to:CGFloat) //平面翻转, 顺时针
+        case scale(fromX:CGFloat, fromY:CGFloat, fromZ:CGFloat, toX:CGFloat, toY:CGFloat, toZ:CGFloat)
+        case scaleX(from:CGFloat, to:CGFloat)
+        case scaleY(from:CGFloat, to:CGFloat)
+        case scaleZ(from:CGFloat, to:CGFloat)
+        case translate(fromX:CGFloat, fromY:CGFloat, fromZ:CGFloat, toX:CGFloat, toY:CGFloat, toZ:CGFloat)
+        case translateX(from:CGFloat, to:CGFloat)
+        case translateY(from:CGFloat, to:CGFloat)
+        case translateZ(from:CGFloat, to:CGFloat)
+        
+        case contents(from:CGImage?, to:CGImage?)   //key为nil
+        case contentsRect(from:CGRect, to:CGRect)   //key为nil, rect使用的是0~1.0之间的相对值
+        case contentsCenter(from:CGRect, to:CGRect) //key为nil, rect使用的是0~1.0之间的相对值
+        case opacity(from:CGFloat, to:CGFloat)  //透明度, 值为0~0.1
+        //case masksToBounds(from:Bool, to:Bool)
+        //case isDoubleSided(from:Bool, to:Bool)  //是否绘制layer的背面
+        case cornerRadius(from:CGFloat, to:CGFloat)
+        case borderWidth(from:CGFloat, to:CGFloat)
+        case borderColor(from:CGColor, to:CGColor)
+        case shadowOpacity(from:CGFloat, to:CGFloat)    //阴影透明度
+        case shadowOffset(from:CGSize, to:CGSize)
+        case shadowColor(from:CGColor?, to:CGColor?)
+        case shadowPath(from:CGPath?, to:CGPath?)
+        
+        case filters(from:[Any]?, to:[Any]?)
+        case compositingFilter(from:Any?, to:Any?)
+        case backgroundFileters(from:[Any]?, to:[Any]?)
+        
+        case bounds(from:CGRect, to:CGRect)
+        case boundsOrigin(from:CGPoint, to:CGPoint)
+        case boundsSize(from:CGSize, to:CGSize)
+        case boundsOriginX(from:CGFloat, to:CGFloat)
+        case boundsOriginY(from:CGFloat, to:CGFloat)
+        case boundsSizeWidth(from:CGFloat, to:CGFloat)
+        case boundsSizeHeight(from:CGFloat, to:CGFloat)
+        
+        case position(fromX:CGFloat, fromY:CGFloat, toX:CGFloat, toY:CGFloat)
+        case positionX(from:CGFloat, to:CGFloat)
+        case positionY(from:CGFloat, to:CGFloat)
+        
+        case zPosition(from:CGFloat, to:CGFloat)
+        
+        case anchorPointZ(from:CGFloat, to:CGFloat)
+        case anchorPoint(from:CGPoint, to:CGPoint)
+        case anchorPointX(from:CGFloat, to:CGFloat)
+        case anchorPointY(from:CGFloat, to:CGFloat)
+        
+        case transform(from:CATransform3D, to:CATransform3D)
+        case sublayerTransform(from:CATransform3D, to:CATransform3D)
+        
+        
+        //text layer
+        case fontSize(from:CGFloat, to:CGFloat)
+        case foregroundColor(from:CGColor?, to:CGColor?)
+        
+        
+        //shape layer
+        case path(from:CGPath?, to:CGPath?)
+        case fillColor(from:CGColor?, to:CGColor?)
+        case lineDashPhase(from:CGFloat, to:CGFloat)
+        case lineWidth(from:CGFloat, to:CGFloat)
+        case miterLimit(from:CGFloat, to:CGFloat)
+        case strokeColor(from:CGColor?, to:CGColor?)
+        case strokeStart(from:CGFloat, to:CGFloat)
+        case strokeEnd(from:CGFloat, to:CGFloat)
+        
+        //gradient layer
+        case colors(from:[CGColor]?, to:[CGColor]?)
+        case locations(from:[CGFloat]?, to:[CGFloat]?)
+        case startPoint(from:CGPoint, to:CGPoint)
+        case endPoint(from:CGPoint, to:CGPoint)
+        
+        //emitter layer
+        case emitterPosition(from:CGPoint, to:CGPoint)
+        case emitterZPosition(from:CGFloat, to:CGFloat)
+        case emitterSize(from:CGSize, to:CGSize)
+        
+        //replicator layer
+        case instanceDelay(from:TimeInterval, to:TimeInterval)
+        case instanceTransform(from:CATransform3D, to:CATransform3D)
+        case instanceColor(from:CGColor?, to:CGColor?)
+        case instanceRedOffset(from:Float, to:Float)
+        case instanceGreenOffset(from:Float, to:Float)
+        case instanceBlueOffset(from:Float, to:Float)
+        case instanceAlphaOffset(from:Float, to:Float)
+    }
+```
+
+Create animation by mode 
+
+> `init(mode:Mode)`
+
+
+### KeyframeAnimation
+
+* Extension -- CAKeyframeAnimation
+
+Animation mode 
+
+```
+public enum ValuePoint {
+        case rotateX(value:CGFloat)
+        case rotateY(value:CGFloat)
+        case rotateZ(value:CGFloat)
+        case scale(x:CGFloat, y:CGFloat, z:CGFloat)
+        case scaleX(value:CGFloat)
+        case scaleY(value:CGFloat)
+        case scaleZ(value:CGFloat)
+        case translate(x:CGFloat, y:CGFloat, z:CGFloat)
+        case translateX(value:CGFloat)
+        case translateY(value:CGFloat)
+        case translateZ(value:CGFloat)
+        
+        case contents(value:CGImage?)
+        case contentsRect(value:CGRect)
+        case contentsCenter(value:CGRect)
+        case opacity(value:CGFloat)
+        //case masksToBounds(value:Bool)
+        //case isDoubleSided(value:Bool)
+        case cornerRadius(value:CGFloat)
+        case borderWidth(value:CGFloat)
+        case borderColor(value:CGColor)
+        case shadowOpacity(value:CGFloat)
+        case shadowOffset(value:CGSize)
+        case shadowColor(value:CGColor?)
+        case shadowPath(value:CGPath?)
+        
+        case filters(value:[Any]?)
+        case compositingFilter(value:Any?)
+        case backgroundFileters(value:[Any]?)
+        
+        case bounds(value:CGRect)
+        case boundsOrigin(value:CGPoint)
+        case boundsSize(value:CGSize)
+        case boundsOriginX(value:CGFloat)
+        case boundsOriginY(value:CGFloat)
+        case boundsSizeWidth(value:CGFloat)
+        case boundsSizeHeight(value:CGFloat)
+        
+        case position(x:CGFloat, y:CGFloat)
+        case positionX(value:CGFloat)
+        case positionY(value:CGFloat)
+        
+        case zPosition(value:CGFloat)
+        
+        case anchorPointZ(value:CGFloat)
+        case anchorPoint(value:CGPoint)
+        case anchorPointX(value:CGFloat)
+        case anchorPointY(value:CGFloat)
+        
+        case transform(value:CATransform3D)
+        case sublayerTransform(value:CATransform3D)
+        
+        //text layer
+        case fontSize(value:CGFloat)
+        case foregroundColor(value:CGColor?)
+        
+        
+        //shape layer
+        case path(value:CGPath?)
+        case fillColor(value:CGColor?)
+        case lineDashPhase(value:CGFloat)
+        case lineWidth(value:CGFloat)
+        case miterLimit(value:CGFloat)
+        case strokeColor(value:CGColor?)
+        case strokeStart(value:CGFloat)
+        case strokeEnd(value:CGFloat)
+        
+        //gradient layer
+        case colors(value:[CGColor]?)
+        case locations(value:[CGFloat]?)
+        case startPoint(value:CGPoint)
+        case endPoint(value:CGPoint)
+        
+        //emitter layer
+        case emitterPosition(value:CGPoint)
+        case emitterZPosition(value:CGFloat)
+        case emitterSize(value:CGSize)
+        
+        //replicator layer
+        case instanceDelay(value:TimeInterval)
+        case instanceTransform(value:CATransform3D)
+        case instanceColor(value:CGColor?)
+        case instanceRedOffset(value:Float)
+        case instanceGreenOffset(value:Float)
+        case instanceBlueOffset(value:Float)
+        case instanceAlphaOffset(value:Float)
+    }
+```
+
+Generate animation from point list
+
+> `init(pointList:[(time:Float, point:ValuePoint)])`
+
+
+
 ### Author
 
 WangYuanOu

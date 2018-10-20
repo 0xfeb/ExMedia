@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C65128D217B52EC0027470E /* BasicAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C65128B217B52EC0027470E /* BasicAnimation.swift */; };
+		6C65128E217B52EC0027470E /* KeyframeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C65128C217B52EC0027470E /* KeyframeAnimation.swift */; };
 		6C65838E210B4F650054863F /* ExMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C65838C210B4F650054863F /* ExMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C658395210B4F7B0054863F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C658394210B4F7B0054863F /* Color.swift */; };
 		6C65839B210BE3B80054863F /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C65839A210BE3B80054863F /* Filter.swift */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		651252E7734E66C9D8F03C20 /* Pods-ExMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExMedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-ExMedia/Pods-ExMedia.release.xcconfig"; sourceTree = "<group>"; };
+		6C65128B217B52EC0027470E /* BasicAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAnimation.swift; sourceTree = "<group>"; };
+		6C65128C217B52EC0027470E /* KeyframeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyframeAnimation.swift; sourceTree = "<group>"; };
 		6C658389210B4F650054863F /* ExMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C65838C210B4F650054863F /* ExMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExMedia.h; sourceTree = "<group>"; };
 		6C65838D210B4F650054863F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 		6C65838B210B4F650054863F /* ExMedia */ = {
 			isa = PBXGroup;
 			children = (
+				6C65128B217B52EC0027470E /* BasicAnimation.swift */,
+				6C65128C217B52EC0027470E /* KeyframeAnimation.swift */,
 				6C65838C210B4F650054863F /* ExMedia.h */,
 				6C65838D210B4F650054863F /* Info.plist */,
 				6C658394210B4F7B0054863F /* Color.swift */,
@@ -201,6 +207,8 @@
 				6C6583C2210D9C980054863F /* Photos.swift in Sources */,
 				6C6583C0210D9B990054863F /* Sound.swift in Sources */,
 				6C6583C4210D9CCD0054863F /* BarCodeScanner.swift in Sources */,
+				6C65128E217B52EC0027470E /* KeyframeAnimation.swift in Sources */,
+				6C65128D217B52EC0027470E /* BasicAnimation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
