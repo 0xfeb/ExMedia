@@ -16,6 +16,7 @@
 		6C6583C0210D9B990054863F /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6583BF210D9B990054863F /* Sound.swift */; };
 		6C6583C2210D9C980054863F /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6583C1210D9C980054863F /* Photos.swift */; };
 		6C6583C4210D9CCD0054863F /* BarCodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6583C3210D9CCD0054863F /* BarCodeScanner.swift */; };
+		6CE8361221A0486900A4D597 /* ViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE8361121A0486900A4D597 /* ViewAnimation.swift */; };
 		7713496CD5ACAE375338B918 /* Pods_ExMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD10308A7E9A52E030274438 /* Pods_ExMedia.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		6C6583BF210D9B990054863F /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		6C6583C1210D9C980054863F /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		6C6583C3210D9CCD0054863F /* BarCodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarCodeScanner.swift; sourceTree = "<group>"; };
+		6CE8361121A0486900A4D597 /* ViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAnimation.swift; sourceTree = "<group>"; };
 		9239DE05E481E17C5C775D5E /* Pods-ExMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExMedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ExMedia/Pods-ExMedia.debug.xcconfig"; sourceTree = "<group>"; };
 		BD10308A7E9A52E030274438 /* Pods_ExMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -88,6 +90,7 @@
 				6C6583BF210D9B990054863F /* Sound.swift */,
 				6C6583C1210D9C980054863F /* Photos.swift */,
 				6C6583C3210D9CCD0054863F /* BarCodeScanner.swift */,
+				6CE8361121A0486900A4D597 /* ViewAnimation.swift */,
 			);
 			path = ExMedia;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				6C6583C2210D9C980054863F /* Photos.swift in Sources */,
 				6C6583C0210D9B990054863F /* Sound.swift in Sources */,
 				6C6583C4210D9CCD0054863F /* BarCodeScanner.swift in Sources */,
+				6CE8361221A0486900A4D597 /* ViewAnimation.swift in Sources */,
 				6C65128E217B52EC0027470E /* KeyframeAnimation.swift in Sources */,
 				6C65128D217B52EC0027470E /* BasicAnimation.swift in Sources */,
 			);
