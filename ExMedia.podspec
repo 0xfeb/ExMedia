@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   An fast library process at media. About color, image, filter, voice and others.
                    DESC
 
-  s.homepage     = "https://gitee.com/clstd/ExMedia"
+  s.homepage     = "https://github.com/0xfeb/ExMedia"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "git@gitee.com:clstd/ExMedia.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/0xfeb/ExMedia.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
