@@ -60,8 +60,7 @@ public extension PHAssetCollection {
         return PHAssetCollection.AssetTitles[name] ?? name
     }
     
-    //获取相册列表
-    static func albums(_ skipNames:[String] = ["Slo-mo", "Videos", "Recently Deleted"]) -> [PHAssetCollection] {
+    private static func fetchAlbums(_ skipNames:[String] = ["Slo-mo", "Videos", "Recently Deleted"]) -> [PHAssetCollection] {
         let smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .albumRegular, options: nil)
         let sSmartAlbums = (0..<smartAlbums.count).map{ smartAlbums.object(at: $0) }.filter{ !skipNames.contains($0.localizedTitle!) }
         
@@ -71,6 +70,32 @@ public extension PHAssetCollection {
         return sSmartAlbums + sAlbums
     }
     
+    static func fetchAlbum(name:String) -> [PHAssetCollection] {
+        let cols = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [name], options: nil)
+        return (0..<cols.count).map{
+            return cols.object(at: $0)
+        }
+    }
+    
+    //获取相册列表
+    static func albums(deniedAlert:@escaping ()->Void, skipNames:[String] = ["Slo-mo", "Videos", "Recently Deleted"]) -> [PHAssetCollection] {
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
+            return fetchAlbums(skipNames)
+        } else {
+            let sema = DispatchSemaphore(value: 0)
+            var result:[PHAssetCollection] = []
+            PHPhotoLibrary.requestAuthorization({ (state) in
+                if state == PHAuthorizationStatus.authorized {
+                    result = fetchAlbums(skipNames)
+                } else if state == PHAuthorizationStatus.denied {
+                    deniedAlert()
+                }
+            })
+            sema.wait()
+            return result
+        }
+    }
+    
     //从相册中获取资源
     func assets(_ ascending:Bool = false) -> [PHAsset] {
         let options = PHFetchOptions()
@@ -78,5 +103,16 @@ public extension PHAssetCollection {
         
         let assets = PHAsset.fetchAssets(in: self, options: options)
         return (0..<assets.count).map{ assets.object(at: $0) }
+    }
+    
+    //获取所有资源
+    static func allAssets(deniedAlert:@escaping ()->Void, skipNames:[String] = ["Slo-mo", "Videos", "Recently Deleted"]) -> [PHAsset] {
+        let collections = albums(deniedAlert: deniedAlert, skipNames: skipNames)
+        var result:[PHAsset] = []
+        for col in collections {
+            result += col.assets()
+        }
+        
+        return result
     }
 }

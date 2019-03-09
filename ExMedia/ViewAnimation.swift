@@ -12,11 +12,14 @@ public extension UIViewPropertyAnimator {
     public static func chain(_ item:(duration:TimeInterval, action:()->()) ...) -> [UIViewPropertyAnimator] {
         var list:[UIViewPropertyAnimator] = []
         
-        item.ex_all(compute: { $0.duration }) { (val) in
-            let ani = UIViewPropertyAnimator(duration: val.item.duration,
+        var used:TimeInterval = 0
+        item.forEach { (item) in
+            let ani = UIViewPropertyAnimator(duration: item.duration,
                                              curve: UIView.AnimationCurve.linear,
-                                             animations: val.item.action)
-            ani.startAnimation(afterDelay: val.used)
+                                             animations: item.action)
+            
+            ani.startAnimation(afterDelay: used)
+            used += item.duration
             
             list.append(ani)
         }

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:ExMediaDemo/ExMediaDemo.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:ExMedia.xcodeproj">
    </FileRef>
    <FileRef

@@ -1,0 +1,105 @@
+//
+//  TestPhotoVC.swift
+//  ExMediaDemo
+//
+//  Created by 王渊鸥 on 2019/2/4.
+//  Copyright © 2019 王渊鸥. All rights reserved.
+//
+
+import UIKit
+import Photos
+import ExMedia
+import ExDraw
+import ExType
+
+private let reuseIdentifier = "PhotoCell"
+
+class TestPhotoVC: UICollectionViewController {
+    var assets:[PHAsset] = []
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Register cell classes
+        //self.collectionView!.register(PhotoCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+
+        // Do any additional setup after loading the view.
+        if let grid =  UIScreen.main.bounds.size.buildGrids(itemCountInRow: 3)?.gap(border: CGSize(width: 10, height: 16), gap: CGSize(width: 8, height: 8)).itemHeight(rate: 1.2, fix: 0) {
+            collectionView.collectionViewLayout = grid.collectionViewLayout
+        }
+        
+        assets = PHAssetCollection.allAssets(deniedAlert: {
+            print("can not get assets")
+        })
+        self.collectionView.reloadData()
+    }
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+    // MARK: UICollectionViewDataSource
+
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of item
+        return assets.count
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoCell
+            let asset = assets[indexPath.row]
+            cell.image.image = asset.image()
+        print(cell)
+    
+        // Configure the cell
+        
+        return cell
+    }
+
+    // MARK: UICollectionViewDelegate
+
+    /*
+    // Uncomment this method to specify if the specified item should be highlighted during tracking
+    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    */
+
+    /*
+    // Uncomment this method to specify if the specified item should be selected
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    */
+
+    /*
+    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return false
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+    
+    }
+    */
+
+}

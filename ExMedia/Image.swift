@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 import ExDraw
+import Photos
+
+public enum PhotoError : Error {
+    case noPermissionToAddImage
+}
 
 public extension UIImage {
     func mask(color:UIColor) -> UIImage? {
@@ -28,8 +33,18 @@ public extension UIImage {
         })
     }
     
-    func saveToPhotos() {
-        UIImageWriteToSavedPhotosAlbum(self, nil, nil, nil)
+    func saveToPhotos(deniedAlert:@escaping ()->Void) {
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
+            UIImageWriteToSavedPhotosAlbum(self, nil, nil, nil)
+        } else {
+            PHPhotoLibrary.requestAuthorization({ (state) in
+                if state == PHAuthorizationStatus.authorized {
+                    UIImageWriteToSavedPhotosAlbum(self, nil, nil, nil)
+                } else if state == PHAuthorizationStatus.denied {
+                    deniedAlert()
+                }
+            })
+        }
     }
     
     func savePngFile(_ filename:String) -> Bool {

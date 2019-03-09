@@ -11,125 +11,92 @@ import UIKit
 import AVFoundation
 import ExType
 
-//TODO: 在手机上检测barcode
-public class ExBarcodeManager: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-    public var session:AVCaptureSession?
-    public var device:AVCaptureDevice?
-    public var input:AVCaptureDeviceInput?
-    public var layer:AVCaptureVideoPreviewLayer?
-    public var output:AVCaptureMetadataOutput?
-    
-    let orientationSet:[UIInterfaceOrientation:AVCaptureVideoOrientation] = [
-        UIInterfaceOrientation.portrait : AVCaptureVideoOrientation.portrait,
-        UIInterfaceOrientation.portraitUpsideDown : AVCaptureVideoOrientation.portraitUpsideDown,
-        UIInterfaceOrientation.landscapeLeft : AVCaptureVideoOrientation.landscapeLeft,
-        UIInterfaceOrientation.landscapeRight : AVCaptureVideoOrientation.landscapeRight,
-        ]
-    
-    var fetchCodeAction:(AVMetadataMachineReadableCodeObject) -> () = { _ in }
-    
-    public override init() {
-        let _session = ex_set(AVCaptureSession()) { (obj) in
-            obj.sessionPreset = AVCaptureSession.Preset.high
-        }
-        session = _session
-        
-        guard let _device = AVCaptureDevice.default(for: AVMediaType.video) else { return }
-        device = _device
-        
-        guard let _input = (try? AVCaptureDeviceInput(device: _device)) else { return }
-        input = _input
-        if _session.canAddInput(_input) {
-            print("--- add input")
-            _session.addInput(_input)
-        }
-        
-        output = AVCaptureMetadataOutput()
-        if _session.canAddOutput(output!) {
-            print("--- add output")
-            _session.addOutput(output!)
-        }
-        
-        layer = AVCaptureVideoPreviewLayer(session: _session)
-        layer?.videoGravity = .resizeAspectFill
-        
-        let systemMetaType = output!.availableMetadataObjectTypes
-        let supportMetaType:[AVMetadataObject.ObjectType] = [.ean8, .ean13, .code128, .qr, .upce, .code39, .code93, .code39Mod43, .aztec]
-        
-        output!.metadataObjectTypes = systemMetaType.filter{ supportMetaType.contains($0) }
-    }
-    
-    func setupOrientation() {
-        if let connection = output?.connection(with: .metadataObject), connection.isVideoOrientationSupported == true {
-            connection.videoOrientation = orientationSet[UIApplication.shared.statusBarOrientation]!
-        }
-    }
-    
-    public convenience init(view:UIView, response:@escaping (AVMetadataMachineReadableCodeObject) -> ()) {
-        self.init()
-        
-        bindLayer(view)
-        setCodeReceivedAction(response)
-        start()
-    }
-    
-    deinit {
-        stop()
-        if let input = input {
-            session?.removeInput(input)
-        }
-        if let output = output {
-            session?.removeOutput(output)
-        }
-        
-        layer?.removeFromSuperlayer()
-    }
-    
-    public func bindLayer(_ view:UIView) {
-        guard let layer = layer else { return }
-        
-        layer.frame = view.bounds
-        layer.masksToBounds = true
-        layer.cornerRadius = 5.0
-        view.layer.addSublayer(layer)
-    }   
-    
-    public func setCodeReceivedAction(_ response:@escaping (AVMetadataMachineReadableCodeObject) -> ()) {
-        fetchCodeAction = response
-        output?.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-    }
-    
-    public func start() {
-        session?.startRunning()
-        
-        setupOrientation()
-    }
-    
-    public func stop() {
-        session?.stopRunning()
-    }
-    
-    public func metadataOutput(_ captureOutput: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        if let obj = metadataObjects.filter({ $0 is AVMetadataMachineReadableCodeObject }).first {
-            if let code = layer?.transformedMetadataObject(for: obj) as? AVMetadataMachineReadableCodeObject {
-                fetchCodeAction(code)
-                
-                stop()
-            }
-        }
-    }
+enum ExBarcodeError : Error {
+    case canNotSetupDevice
+    case canNotAddInput
+    case canNotAddOutput
+    case canNotSupportMetaType
 }
 
-public class ExBarcodeScannerView : UIView {
-    private var manager : ExBarcodeManager = ExBarcodeManager()
-    public var onGetCode:(String?) -> () = { _ in }
-    
-    public func start() {
-        manager.bindLayer(self)
-        manager.setCodeReceivedAction { [weak self] (object) in
-            self?.manager.stop()
-            self?.onGetCode(object.stringValue)
+public extension AVCaptureSession {
+    func bind(superLayer:CALayer, window:CGSize? = nil) {
+        func addMaskLayer(layer:CALayer, frame:CGRect) {
+            _ = setup(CALayer()) {
+                $0.isOpaque = true
+                $0.opacity = 0.5
+                $0.backgroundColor = UIColor.white.cgColor
+                $0.frame = frame
+                superLayer.addSublayer($0)
+            }
         }
-        manager.start()
+        
+        let layer = AVCaptureVideoPreviewLayer(session: self)
+        layer.videoGravity = .resizeAspectFill
+        layer.frame = superLayer.bounds
+        superLayer.addSublayer(layer)
+        
+        if let window = window {
+            let center = CGRect(center: superLayer.bounds.center, size: window)
+
+            let topGridFrame = CGRect(x: 0, y: 0, width: superLayer.bounds.width, height: center.minY)
+            let leftGridFrame = CGRect(x: 0, y: center.minY, width: center.minX, height: center.height)
+            let rightGridFrame = CGRect(x: center.maxX, y: center.minY, width: center.minX, height: center.height)
+            let bottomGridFrame = CGRect(x: 0, y: center.maxY, width: superLayer.bounds.width, height: center.minY)
+
+            addMaskLayer(layer: superLayer, frame: topGridFrame)
+            addMaskLayer(layer: superLayer, frame: leftGridFrame)
+            addMaskLayer(layer: superLayer, frame: rightGridFrame)
+            addMaskLayer(layer: superLayer, frame: bottomGridFrame)
+        }
+    }
+    
+    func bind(device:AVCaptureDevice) throws {
+        let input = try AVCaptureDeviceInput(device: device)
+        if self.canAddInput(input) {
+            self.addInput(input)
+        } else {
+            throw ExBarcodeError.canNotAddInput
+        }
+    }
+    
+    func bind<Object:AVCaptureMetadataOutputObjectsDelegate>(metaList:[AVMetadataObject.ObjectType], delegate:Object, limitInCenter:Bool = true) throws {
+        let output = AVCaptureMetadataOutput()
+        if limitInCenter {
+            output.rectOfInterest = CGRect(x: 0.25, y: 0.25, width: 0.5, height: 0.5)
+        }
+        if self.canAddOutput(output) {
+            self.addOutput(output)
+            
+            if let conn = output.connection(with: .metadataObject), conn.isVideoOrientationSupported {
+                conn.videoOrientation = AVCaptureVideoOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!
+            }
+            
+            output.setMetadataObjectsDelegate(delegate, queue: DispatchQueue.main)
+            try metaList.forEach({
+                if !output.availableMetadataObjectTypes.contains($0) {
+                    throw ExBarcodeError.canNotSupportMetaType
+                }
+            })
+            
+            output.metadataObjectTypes = metaList
+        } else {
+            throw ExBarcodeError.canNotAddOutput
+        }
+    }
+    
+    static func authorize() -> Bool {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        if status == .authorized {
+            return true
+        } else {
+            let sema = DispatchSemaphore(value: 0)
+            var canAuth = false
+            AVCaptureDevice.requestAccess(for: .video) { (result) in
+                canAuth = result
+                sema.signal()
+            }
+            sema.wait()
+            return canAuth
+        }
     }
 }
