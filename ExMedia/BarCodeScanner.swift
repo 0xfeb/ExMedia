@@ -19,7 +19,7 @@ enum ExBarcodeError : Error {
 }
 
 public extension AVCaptureSession {
-    func bind(superLayer:CALayer, window:CGSize? = nil) {
+    func bind(superLayer:CALayer, gravity:AVLayerVideoGravity = .resizeAspectFill, window:CGSize? = nil) {
         func addMaskLayer(layer:CALayer, frame:CGRect) {
             _ = setup(CALayer()) {
                 $0.isOpaque = true
@@ -31,7 +31,7 @@ public extension AVCaptureSession {
         }
         
         let layer = AVCaptureVideoPreviewLayer(session: self)
-        layer.videoGravity = .resizeAspectFill
+        layer.videoGravity = gravity
         layer.frame = superLayer.bounds
         superLayer.addSublayer(layer)
         
