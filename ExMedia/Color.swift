@@ -10,7 +10,7 @@ import UIKit
 import ExType
 
 public extension UIColor {
-    public convenience init(hex:String) {
+    convenience init(hex:String) {
         let colorText = hex.hasPrefix("#") ? String(hex[hex.startIndex...]) : hex
         
         let red = Int(hex:colorText[0..<2] ?? "ff")
@@ -25,15 +25,15 @@ public extension UIColor {
         }
     }
     
-    public convenience init(RGBA r:Double, _ g:Double, _ b:Double, _ a:Double) {
+    convenience init(RGBA r:Double, _ g:Double, _ b:Double, _ a:Double) {
         self.init(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
     }
     
-    public convenience init(HSBA h:Double, _ s:Double, _ b:Double, _ a:Double) {
+    convenience init(HSBA h:Double, _ s:Double, _ b:Double, _ a:Double) {
         self.init(hue: CGFloat(h), saturation: CGFloat(s), brightness: CGFloat(b), alpha: CGFloat(a))
     }
     
-    public var RGBA:(Double, Double, Double, Double) {
+    var RGBA:(Double, Double, Double, Double) {
         var red:CGFloat = 0, green:CGFloat = 0, blue:CGFloat = 0, alpha:CGFloat = 0, white:CGFloat = 0
         if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
             return (Double(red), Double(green), Double(blue), Double(alpha))
@@ -45,17 +45,17 @@ public extension UIColor {
         }
     }
     
-    public var hex6:String {
+    var hex6:String {
         let (r,g,b,_) = RGBA
         return String(format: "%02X%02X%02X", Int(r*255.0), Int(g*255.0), Int(b*255.0))
     }
     
-    public var hex8:String {
+    var hex8:String {
         let (r,g,b,a) = RGBA
         return String(format: "%02X%02X%02X%02X", Int(r*255.0), Int(g*255.0), Int(b*255.0), Int(a*255.0))
     }
     
-    public var HSBA:(Double, Double, Double, Double) {
+    var HSBA:(Double, Double, Double, Double) {
         var h:CGFloat = 0, s:CGFloat = 0, b:CGFloat = 0, a:CGFloat = 0
         if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
             return (Double(h), Double(s), Double(b), Double(a))
@@ -64,7 +64,7 @@ public extension UIColor {
         }
     }
     
-    public func combined(color:UIColor) -> UIColor {
+    func combined(color:UIColor) -> UIColor {
         let (r,g,b, a) = self.RGBA
         let (r1,g1,b1, a1) = color.RGBA
         return UIColor(RGBA:((r + r1)/2).limited(0, 1),
@@ -73,7 +73,7 @@ public extension UIColor {
                        ((a + a1)/2).limited(0, 1))
     }
     
-    public func divided(color:UIColor) -> UIColor {
+    func divided(color:UIColor) -> UIColor {
         let (r,g,b,a) = self.RGBA
         let (r1,g1,b1,a1) = color.RGBA
         return UIColor(RGBA:(r - r1).limited(0, 1),
@@ -82,22 +82,22 @@ public extension UIColor {
                        (a - a1).limited(0, 1))
     }
     
-    public func lighted(level:Int = 1) -> UIColor {
+    func lighted(level:Int = 1) -> UIColor {
         let (h, s, b, a) = HSBA
         let nb = (b+0.01*Double(level)).limited(0, 1)
         return UIColor(HSBA:Double(h), Double(s), Double(nb), Double(a))
     }
     
-    public func darked(level:Int = 1) -> UIColor {
+    func darked(level:Int = 1) -> UIColor {
         return lighted(level: 0 - level)
     }
     
-    public var opsite:UIColor {
+    var opsite:UIColor {
         let (r,g,b,a) = self.RGBA
         return UIColor(HSBA: 1-r, 1-g, 1-b, a)
     }
     
-    public func sets(by count:Int, distance:Int) -> [UIColor] {
+    func sets(by count:Int, distance:Int) -> [UIColor] {
         func plus(_ lhs:Double, _ rhs:Double, maxLimit:Double) -> Double {
             var result = lhs + rhs
             while result < 0 {
@@ -129,5 +129,17 @@ public extension UIColor {
         }
         
         return result
+    }
+    
+    func buildImage(size:CGSize = CGSize(width: 1, height: 1)) -> UIImage {
+        let image = UIGraphicsImageRenderer(size: size).image { [weak self] (context) in
+            guard let vc = self else { return }
+            
+            vc.setFill()
+            
+            context.cgContext.fill(CGRect(origin: CGPoint.zero, size: size))
+        }
+        
+        return image
     }
 }

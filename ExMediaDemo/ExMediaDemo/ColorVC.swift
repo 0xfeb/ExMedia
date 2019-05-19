@@ -126,6 +126,20 @@ class ColorVC: UIViewController {
         }
     }
     
+    @IBAction func onSaveImage(_ sender: Any) {
+        let color = aColorDisplay.backgroundColor!
+        let image = color.buildImage()
+        
+        image.saveToPhotos { [weak self] in
+            guard let vc = self else { return }
+            
+            let alert = UIAlertController(title: "添加授权", message: "存储图片", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            vc.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 extension ColorVC : UICollectionViewDataSource {
