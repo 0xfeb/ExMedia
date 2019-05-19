@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ExMedia"
-  s.version      = "0.1.1"
+  s.version      = "0.1.3"
   s.summary      = "Operations on media at iOS platform."
 
   # This description is used to generate tags and improve search results.
