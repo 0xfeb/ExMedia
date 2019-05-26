@@ -10,25 +10,25 @@ import CoreImage
 import UIKit
 
 public extension UIImage {
-    public var ciImage:CIImage? {
+    var ciImage:CIImage? {
         guard let cgImage = self.cgImage else { return nil }
         let ciImage = CIImage(cgImage: cgImage)
         return ciImage
     }
     
-    public func applyFilter(_ action:(CIImage) -> CIImage?) -> UIImage? {
+    func applyFilter(_ action:(CIImage) -> CIImage?) -> UIImage? {
         guard let ciimage = ciImage else { return nil }
         let size = self.size
         return action(ciimage)?.uiImage(size: size)
     }
     
-    public static func generator(size:CGSize, _ action:() -> CIImage?) -> UIImage? {
+    static func generator(size:CGSize, _ action:() -> CIImage?) -> UIImage? {
         return action()?.uiImage(size: size)
     }
 }
 
 public extension CIImage {
-    public func uiImage(size:CGSize? = nil) -> UIImage? {
+    func uiImage(size:CGSize? = nil) -> UIImage? {
         if let size = size {
             let ciContext = CIContext()
             guard let oCgImage = ciContext.createCGImage(self, from: CGRect(origin:CGPoint(), size: size)) else { return nil }
@@ -44,7 +44,7 @@ public extension CIImage {
 public extension CIImage {
     typealias ColorComponents = (red:CGFloat, green:CGFloat, blue:CGFloat, alpha:CGFloat)
     
-    public func boxBlur(radius:CGFloat = 10.0) -> CIImage? {
+    func boxBlur(radius:CGFloat = 10.0) -> CIImage? {
         let filter = CIFilter(name: "CIBoxBlur", parameters: [
             "inputImage": self, "inputRadius": radius ])
         return filter?.outputImage

@@ -9,7 +9,7 @@
 import UIKit
 
 public extension UITableView {
-    public func cell(_ identifier:String, style:UITableViewCell.CellStyle) -> UITableViewCell {
+    func cell(_ identifier:String, style:UITableViewCell.CellStyle) -> UITableViewCell {
         if let c = self.dequeueReusableCell(withIdentifier: identifier) {
             return c
         }
